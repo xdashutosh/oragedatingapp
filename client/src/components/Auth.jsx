@@ -24,8 +24,8 @@ const Auth = ({ setshowmodel, isSignUp, setisSignUp }) => {
         seterror("password need to match!");
         return 
       } else {
-        const response = await axios.post('http://localhost:8000/signup',{Email,password});
-        console.log("hey there");
+        const response = await axios.post('http://localhost:8000',{Email,password});
+        // console.log("hey there");
         const successd = response.status === 201;
         console.log(successd);
       }
