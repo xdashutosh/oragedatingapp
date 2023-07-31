@@ -1,22 +1,33 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
+import {useNavigate} from 'react-router-dom';
+// import {useCookie} from 'react-cookie'
 const Auth = ({ setshowmodel, isSignUp, setisSignUp }) => {
   const [Email, setEmail] = useState(null);
   const [password, setpassword] = useState(null);
   const [confirmpass, setconfirmpass] = useState(null);
   const [error, seterror] = useState(null);
-
+  // const [cookies,setcookies,removecookies]=usCookie(null);
+  let navigate=useNavigate( );
+  
   console.log(Email, password, confirmpass);
   const clickhandle = () => {
     setshowmodel(false);
   };
-  const handlesubmit = (e) => {
+  const handlesubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (isSignUp && password !== confirmpass) {
+    const success =true
+    if(success) navigate('/onboarding');
+    try {   
+      if (isSignUp && (password !== confirmpass)) {
         seterror("password need to match!");
+        return 
       } else {
-        console.log("make a post request to database!");
+        const response = await axios.post('http://localhost:8000/signup',{Email,password});
+        console.log("hey there");
+        const successd = response.status === 201;
+        console.log(successd);
       }
     } catch (error) {
       console.log(error);

@@ -1,8 +1,8 @@
 import React from "react";
 import Nav from "../components/Nav";
+import {useNavigate} from 'react-router-dom';
 import { useState } from "react";
 const Onboarding = () => {
-
 const[formdata,setformdata]=useState(
   {
     user_id:"",
@@ -20,7 +20,12 @@ const[formdata,setformdata]=useState(
   }
 )
 
-
+let navigate=useNavigate( );
+ const datasubmit = (e)=>{
+// e.preventDefault();
+let datasub=true
+if(datasub) navigate('/dashboard');
+ }
 
   const submithandler = (e) => {
     e.preventDefault();
@@ -153,7 +158,7 @@ const[formdata,setformdata]=useState(
               value={formdata.aboutme}
               onChange={handlechnage}
             />
-            <input type="submit" value="submit" />
+            <input type="submit" value="submit" onClick={datasubmit} />
           </section>
 
           <section className="photo">

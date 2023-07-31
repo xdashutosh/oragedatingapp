@@ -60,9 +60,9 @@ navbar {
   background: linear-gradient(
       to bottom,
       rgba(19, 10, 10, 0.596),
-      rgba(252, 251, 251, 0.562)
+      rgba(252, 251, 251, 0.171)
     ),
-    url("https://cdn.mos.cms.futurecdn.net/ZxVupd6yZexhbPEPCcbujU.jpg");
+    url("https://images.unsplash.com/photo-1591178761188-885caa0b4fc3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1479&q=80");
   position: fixed;
 }
 .nav-btn {
