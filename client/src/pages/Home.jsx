@@ -16,7 +16,7 @@ const Home = () => {
 
   return (
     <div className="overlay">
-      <Nav
+      <Nav authtoken={false}
         minimal={false}
         setshowmodel={setshowmodel}
         showmodel={showmodel}
@@ -31,7 +31,7 @@ const Home = () => {
           <Auth
             setshowmodel={setshowmodel}
             isSignUp={isSignUp}
-            setisSignUp={setisSignUp}
+            
           />
         )}
       </div>

@@ -2,13 +2,13 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import {useNavigate} from 'react-router-dom';
-// import {useCookie} from 'react-cookie'
-const Auth = ({ setshowmodel, isSignUp, setisSignUp }) => {
+import {useCookies} from 'react-cookie';
+const Auth = ({ setshowmodel, isSignUp}) => {
   const [Email, setEmail] = useState(null);
   const [password, setpassword] = useState(null);
   const [confirmpass, setconfirmpass] = useState(null);
   const [error, seterror] = useState(null);
-  // const [cookies,setcookies,removecookies]=usCookie(null);
+  const [cookie,setcookie,removecookie]=useCookies(['user']);
   let navigate=useNavigate( );
   
   console.log(Email, password, confirmpass);
@@ -17,17 +17,23 @@ const Auth = ({ setshowmodel, isSignUp, setisSignUp }) => {
   };
   const handlesubmit = async (e) => {
     e.preventDefault();
-    const success =true
-    if(success) navigate('/onboarding');
+    // const success =true
     try {   
       if (isSignUp && (password !== confirmpass)) {
         seterror("password need to match!");
         return 
       } else {
-        const response = await axios.post('http://localhost:8000',{Email,password});
+        const response = await axios.post(`http://localhost:8000/${isSignUp?'signup':'login'}`,{Email,password});
         // console.log("hey there");
+
+        setcookie('userId',response.data.userId);
+        setcookie('Authtoken',response.data.token);
         const successd = response.status === 201;
-        console.log(successd);
+
+        if(successd && isSignUp) navigate('/onboarding');
+        if(successd && !isSignUp) navigate('/dashboard');
+  window.location.reload();
+
       }
     } catch (error) {
       console.log(error);
@@ -48,6 +54,7 @@ const Auth = ({ setshowmodel, isSignUp, setisSignUp }) => {
           name="email"
           required
           placeholder="Email"
+          autoComplete="off"
           onChange={(e) => setEmail(e.target.value)}
         />
         <input

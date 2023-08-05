@@ -1,51 +1,93 @@
+import axios from "axios";
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Chatcontainer from "../components/Chatcontainer";
-const characters = [
-  {
-    name: "ashutosh chaudhary",
-    url: "https://image.tmdb.org/t/p/original/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
-  },
-  {
-    name: "ayushi",
-    url: "https://media.istockphoto.com/id/1146517111/photo/taj-mahal-mausoleum-in-agra.jpg?s=612x612&w=0&k=20&c=vcIjhwUrNyjoKbGbAQ5sOcEzDUgOfCsm9ySmJ8gNeRk=",
-  },
-  {
-    name: "abhinav chaudhary",
-    url: "https://images.pexels.com/photos/1485031/pexels-photo-1485031.jpeg?cs=srgb&dl=pexels-harsh-raj-gond-1485031.jpg&fm=jpg",
-  },
-  {
-    name: "shridul sharma",
-    url: "https://image.tmdb.org/t/p/original/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
-  },
-  {
-    name: "ashutosh chaudhary",
-    url: "https://image.tmdb.org/t/p/original/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
-  },
-  {
-    name: "ayushi",
-    url: "https://image.tmdb.org/t/p/original/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
-  },
-  {
-    name: "abhinav chaudhary",
-    url: "https://image.tmdb.org/t/p/original/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
-  },
-  {
-    name: "shridul sharma",
-    url: "https://image.tmdb.org/t/p/original/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
-  },
-];
+import { useState,useEffect } from "react";
+import {useCookies} from 'react-cookie';
 
-const handlematch = (e)=>
-{e.preventDefault();
-console.log(e.target.value);
-}
+
+
+
 
 const Dashboard = () => {
+  const [cookie,setcookie,removecookie]=useCookies(['user']);
+  const[user,setuser]=useState("");
+  const[genderuser,setgenderuser]=useState("");
+  const userId = cookie.userId;
+  const getuser = async () =>{
+    try{
+      const response = await axios.get('http://localhost:8000/user',{params:{userId}})
+      setuser(response.data);
+    }
+    catch(error)
+    {
+      console.log(error);
+    }
+  }
+
+  const getgenderuser = async()=>{
+    try {
+      const response = await axios.get('http://localhost:8000/gender-users', {
+          params: {gender: user?.gender_int}
+      })
+      setgenderuser(response.data)
+  } catch (error) {
+      console.log(error)
+  }
+
+  }
+
+  useEffect(()=>{
+    getuser()
+    getgenderuser()
+  },[user,genderuser])
+  console.log(genderuser);
+
+
+  const characters = [
+    {
+      name: "ashutosh chaudhary",
+      url: "https://i.imgur.com/H07Fxdh.jpeg ",
+    },
+    {
+      name: "ayushi",
+      url: "https://i.imgur.com/Gg6BpGn.jpeg",
+    },
+    {
+      name: "abhinav chaudhary",
+      url: "https://i.imgur.com/Gg6BpGn.jpeg",
+    },
+    {
+      name: "shridul sharma",
+      url: "https://i.imgur.com/oPj4A8u.jpeg",
+    },
+    {
+      name: "ashutosh chaudhary",
+      url: "https://i.imgur.com/Q9WPlWA.jpeg",
+    },
+    {
+      name: "ayushi",
+      url: "https://i.imgur.com/Q9WPlWA.jpeg",
+    },
+    {
+      name: "abhinav chaudhary",
+      url: "https://i.imgur.com/Q9WPlWA.jpeg",
+    },
+    {
+      name: "shridul sharma",
+      url: "https://i.imgur.com/dmwjVjG.jpeg",
+    },
+  ];
+  
+  const handlematch = (e)=>
+  {e.preventDefault();
+  console.log(e.target.value);
+  }
+
   return (
     <div className="dashboard">
-      <Chatcontainer />
+      <Chatcontainer user={user}/>
       <div className="swiper_container">
         <div className="card_container">
           <Carousel

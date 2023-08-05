@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 const Chatinput = () => {
-    const [inputvalue,setinputvalue]=useState(null);
+    const [inputvalue,setinputvalue]=useState("");
   return (
     <div className='input-chat'>
       <input type="text" value={inputvalue} onChange={(e)=>setinputvalue(e.target.value)} />

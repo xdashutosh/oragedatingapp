@@ -1,12 +1,13 @@
 import React from "react";
 
-const Nav = ({ setshowmodel, showmodel, minimal }) => {
+const Nav = ({ setshowmodel, showmodel, minimal,authtoken ,setisSignUp}) => {
   const clickhandle = () => {
     setshowmodel(true);
+    setisSignUp(false);
   };
-  const authtoken = false;
+
   return (
-    <navbar>
+    <nav>
       <div className="logo-cont">
         <h1 className="logo">OrageD</h1>
       </div>
@@ -16,7 +17,7 @@ const Nav = ({ setshowmodel, showmodel, minimal }) => {
           Log in
         </button>
       )}
-    </navbar>
+    </nav>
   );
 };
 

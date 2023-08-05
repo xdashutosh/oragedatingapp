@@ -1,11 +1,15 @@
 import React from "react";
 import Nav from "../components/Nav";
-import {useNavigate} from 'react-router-dom';
+import {useCookies} from 'react-cookie';
 import { useState } from "react";
+import {useNavigate } from "react-router-dom";
+import axios from "axios";
 const Onboarding = () => {
-const[formdata,setformdata]=useState(
-  {
-    user_id:"",
+  let navigate = useNavigate();
+  const [cookie,setcookie,removecookie]=useCookies(['user']);
+  const[formdata,setformdata]=useState(
+    {
+    user_id:cookie.userId,
     first_name:"",
     dob_day:"",
     dob_month:"",
@@ -13,23 +17,23 @@ const[formdata,setformdata]=useState(
     show_gender:false,
     gender_identity:"men",
     gender_int:"women",
-    email:"",
     url:"",
     aboutme:"",
     matches:[]
   }
-)
+  ) 
 
-let navigate=useNavigate( );
- const datasubmit = (e)=>{
-// e.preventDefault();
-let datasub=true
-if(datasub) navigate('/dashboard');
- }
 
-  const submithandler = (e) => {
+  const submithandler = async (e) => {
     e.preventDefault();
+    try{
+      const response =await axios.put('http://localhost:8000/user',{formdata});
+const success =response.status === 200;
+if(success) navigate('/dashboard');
+    }catch(error)
+    {console.log(error)}
   };
+
   const handlechnage = (e) => { 
     const name =e.target.name;
     const value=e.target.type === 'checkbox' ? e.target.checked : e.target.value; 
@@ -61,6 +65,7 @@ if(datasub) navigate('/dashboard');
               required
               value={formdata.first_name}
               onChange={handlechnage}
+              autoComplete ="off"
             />
 
             <label>Birthday</label>
@@ -104,8 +109,8 @@ if(datasub) navigate('/dashboard');
                 id="men"
                 name="gender_identity"
                 value="men"
-                checked={formdata.gender_identity}
                 onChange={handlechnage}
+                checked={formdata.gender_identity==="men"}
               />
               <label>women</label>
               <input
@@ -113,8 +118,8 @@ if(datasub) navigate('/dashboard');
                 id="women"
                 name="gender_identity"
                 value="women"
-                checked={formdata.gender_identity}
                 onChange={handlechnage}
+                checked={formdata.gender_identity==="women"}
               />
             </div>
             <label htmlFor="show_gender">Show gender on my profile</label>
@@ -122,29 +127,29 @@ if(datasub) navigate('/dashboard');
               type="checkbox"
               id="show_gender"
               name="show_gender"
-              checked={formdata.show_gender}
               onChange={handlechnage}
+              checked={formdata.show_gender}
             />
 
             <label>SHOW ME</label>
             <div className="multiple_input">
-              <label>Men</label>
+              <label>Women</label>
               <input
                 type="radio"
                 id="women_int"
                 name="gender_int"
                 value="women"
-                checked={formdata.gender_int}
                 onChange={handlechnage}
+                checked={formdata.gender_int === "women"}
               />
-              <label>women</label>
+              <label>Men</label>
               <input
                 type="radio"
                 id="women_int"
                 name="gender_int"
                 value="men"
-                checked={formdata.gender_int}
                 onChange={handlechnage}
+                checked={formdata.gender_int==="men"}
               />
             </div>
 
@@ -155,10 +160,11 @@ if(datasub) navigate('/dashboard');
               name="aboutme"
               required
               placeholder="i love to......."
+              autoComplete ="off"
               value={formdata.aboutme}
               onChange={handlechnage}
             />
-            <input type="submit" value="submit" onClick={datasubmit} />
+            <input type="submit" value="submit" />
           </section>
 
           <section className="photo">
